@@ -1,9 +1,12 @@
-#!usr/bin/env python3
+#!/usr/bin/env python3
 import json
 import sys
 import os
 
-INPUT_FILE = 'testdata.json' # Constant variables are usually in ALL CAPS
+import numpy as np
+from numpy.linalg import norm
+
+INPUT_FILE = '/workspaces/algo-comp-2024/assignment1/testdata.json' # Constant variables are usually in ALL CAPS
 
 class User:
     def __init__(self, name, gender, preferences, grad_year, responses):
@@ -16,9 +19,8 @@ class User:
 
 # Takes in two user objects and outputs a float denoting compatibility
 def compute_score(user1, user2):
-    # YOUR CODE HERE
-    return 0
-
+    # Use cosine similarity 
+    return np.dot(user1.responses,user2.responses)/(norm(user1.responses)*norm(user2.responses))
 
 if __name__ == '__main__':
     # Make sure input file is valid
