@@ -16,11 +16,17 @@ class User:
         self.grad_year = grad_year
         self.responses = responses
 
-
+weights_for_grad_years = {0: 1, 1: 0.9, 2: 0.7, 3: 0.5,4: 0}
 # Takes in two user objects and outputs a float denoting compatibility
 def compute_score(user1, user2):
-    # Use cosine similarity 
-    return np.dot(user1.responses,user2.responses)/(norm(user1.responses)*norm(user2.responses))
+    age_diff_weight = weights_for_grad_years[abs(user1.grad_year - user2.grad_year)]
+
+    cosine_sim = np.dot(user1.responses,user2.responses)/(norm(user1.responses)*norm(user2.responses))
+    # Match straight people with straight people, gay people with gay people
+    if (user1.gender == user2.preferences[0] and user2.gender == user1.preferences[0]):
+        return (cosine_sim * age_diff_weight)
+    else:
+        return 0
 
 if __name__ == '__main__':
     # Make sure input file is valid
